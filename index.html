@@ -22,56 +22,41 @@
     </table>
   </div>
 
-<script>
-const RAW_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQx037iouAPGiGKRWntQq9xdlQrJ6iX9icpjtk0-P8UYtziVF7ATcthoa-MRlylI-L2ze0iNvSt7q_1/pub?gid=0&single=true&output=csv";
 
-// CORS 우회 프록시
-const CSV_URL = `https://script.google.com/macros/s/AKfycbytYNMAZymvswudM7Sn_WcwaPp7QumtlndFYmwFEyLdPd1eZdqwmxs2mV_ljQgTK6U/exec`;
+  <script>
+const API_URL = "https://script.google.com/macros/s/AKfycbytYNMAZymvswudM7Sn_WcwaPp7QumtlndFYmwFEyLdPd1eZdqwmxs2mV_ljQgTK6U/exec";
 
 async function loadScores(){
-  try{
-    const res = await fetch(CSV_URL);
-    const text = await res.text();
+  try {
+    const res = await fetch(API_URL);
+    const data = await res.json();
 
-    let lines = text.split(/\r?\n/).filter(v => v.trim()).slice(1);
-    let rows = lines.map(line=>{
-      const parts = line.split(",");
-      return { name: parts[0].replace(/"/g,""), score: Number(parts[1]) || 0 };
-    });
+    const table = document.getElementById("leaderboard");
+    table.innerHTML = `
+      <tr>
+        <th>순위</th>
+        <th>이름</th>
+        <th>점수</th>
+      </tr>
+    `;
 
-    rows.sort((a,b)=>b.score - a.score);
-
-    const table = document.getElementById("tbl");
-
-    // 기존 내용 삭제 후 갱신
-    table.innerHTML = `<tr><th>Rank</th><th>Name</th><th>Score</th></tr>`;
-
-    rows.slice(0,10).forEach((r,i)=>{
-      const row = document.createElement("tr");
-      row.innerHTML = `
+    data.sort((a,b)=> b.score - a.score).forEach((row, i) => {
+      table.innerHTML += `
+      <tr>
         <td>${i+1}</td>
-        <td>${r.name}</td>
-        <td>${r.score}</td>
-      `;
-      table.appendChild(row);
+        <td>${row.name}</td>
+        <td>${row.score}</td>
+      </tr>`;
     });
 
-  }catch(err){
+  } catch(err) {
     console.error(err);
-    document.body.innerHTML = `<h3 style="color:red">⚠ 데이터 불러오기 오류: ${err.message}</h3>`;
-  }
-}
-
-// 처음 실행
-loadScores();
-
-// **5초마다 자동 새로고침**
-setInterval(loadScores, 5000);
-</script>
+    document.body.innerHTML =
 
 
 
 
 </body>
 </html>
+
 
