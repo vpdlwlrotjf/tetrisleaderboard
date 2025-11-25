@@ -26,7 +26,7 @@
 const RAW_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQx037iouAPGiGKRWntQq9xdlQrJ6iX9icpjtk0-P8UYtziVF7ATcthoa-MRlylI-L2ze0iNvSt7q_1/pub?gid=0&single=true&output=csv";
 
 // CORS 우회 프록시
-const CSV_URL = `https://api.allorigins.win/raw?url=${encodeURIComponent(RAW_URL)}`;
+const CSV_URL = `https://script.google.com/macros/s/AKfycbytYNMAZymvswudM7Sn_WcwaPp7QumtlndFYmwFEyLdPd1eZdqwmxs2mV_ljQgTK6U/exec`;
 
 async function loadScores(){
   try{
@@ -74,3 +74,4 @@ setInterval(loadScores, 5000);
 
 </body>
 </html>
+
