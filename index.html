@@ -23,44 +23,40 @@
   </div>
 
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbxfRmMioUIaTAbrGfwQ_LgZMz-QNvfOiLk4YIW6ZaBogg1kjr_SWN_B0CYyMZip1N3x/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbzBQ4WQKRJMYEMcL1_McSYNG29WfHAZhD5sfgOTZVlPgU-bNO_9itl24wu1M2065i9d/exec";
 
-async function loadScores(){
-  try {
-    const res = await fetch(API_URL);
-    const data = await res.json();
+function handleLeaderboard(data) {
+  const table = document.getElementById("tbl");
+  table.innerHTML = `<tr><th>Rank</th><th>Name</th><th>Score</th></tr>`;
 
-    const table = document.getElementById("tbl");
-    table.innerHTML = `
+  data.sort((a,b)=>b.score-a.score).slice(0,10).forEach((r,i)=>{
+    table.innerHTML += `
       <tr>
-        <th class="rank">Rank</th>
-        <th class="name">Name</th>
-        <th class="score">Score</th>
+        <td>${i+1}</td>
+        <td>${r.name}</td>
+        <td>${r.score}</td>
       </tr>
     `;
-
-    data.sort((a,b)=> b.score - a.score).forEach((row, i) => {
-      table.innerHTML += `
-      <tr>
-        <td class="rank">${i+1}</td>
-        <td class="name">${row.name}</td>
-        <td class="score">${row.score}</td>
-      </tr>`;
-    });
-
-  } catch(err) {
-    console.error(err);
-    document.body.innerHTML = `<p style="color:red;">⚠ 데이터 불러오기 오류: ${err.message}</p>`;
-  }
+  });
 }
 
-// 처음 실행 + 5초마다 갱신
-loadScores();
-setInterval(loadScores, 5000);
+function refresh() {
+  const old = document.getElementById("jsonp");
+  if(old) old.remove();
+
+  const s = document.createElement("script");
+  s.id="jsonp";
+  s.src = `${API_URL}?callback=handleLeaderboard&_=${Date.now()}`;
+  document.body.appendChild(s);
+}
+
+refresh();
+setInterval(refresh, 5000);
 </script>
 
 </body>
 </html>
+
 
 
 
