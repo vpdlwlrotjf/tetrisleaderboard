@@ -22,8 +22,7 @@
     </table>
   </div>
 
-
-  <script>
+<script>
 const API_URL = "https://script.google.com/macros/s/AKfycbytYNMAZymvswudM7Sn_WcwaPp7QumtlndFYmwFEyLdPd1eZdqwmxs2mV_ljQgTK6U/exec";
 
 async function loadScores(){
@@ -31,32 +30,37 @@ async function loadScores(){
     const res = await fetch(API_URL);
     const data = await res.json();
 
-    const table = document.getElementById("leaderboard");
+    const table = document.getElementById("tbl");
     table.innerHTML = `
       <tr>
-        <th>순위</th>
-        <th>이름</th>
-        <th>점수</th>
+        <th class="rank">Rank</th>
+        <th class="name">Name</th>
+        <th class="score">Score</th>
       </tr>
     `;
 
     data.sort((a,b)=> b.score - a.score).forEach((row, i) => {
       table.innerHTML += `
       <tr>
-        <td>${i+1}</td>
-        <td>${row.name}</td>
-        <td>${row.score}</td>
+        <td class="rank">${i+1}</td>
+        <td class="name">${row.name}</td>
+        <td class="score">${row.score}</td>
       </tr>`;
     });
 
   } catch(err) {
     console.error(err);
-    document.body.innerHTML =
+    document.body.innerHTML = `<p style="color:red;">⚠ 데이터 불러오기 오류: ${err.message}</p>`;
+  }
+}
 
-
-
+// 처음 실행 + 5초마다 갱신
+loadScores();
+setInterval(loadScores, 5000);
+</script>
 
 </body>
 </html>
+
 
 
