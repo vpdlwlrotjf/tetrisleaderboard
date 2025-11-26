@@ -16,6 +16,12 @@
   .silver { color: #A8A9AD; } /* 은(회색) */
   .bronze { color: #cd7f32; } /* 동 */
   .normal { color: #ffffff; } /* 나머지 */
+  .rankcell {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+}
 
 
 
@@ -46,25 +52,22 @@ function handleLeaderboard(data) {
   data.sort((a,b)=>b.score-a.score).slice(0,10).forEach((r,i)=>{
 
   let cls = "normal";
-  let medal = ""; 
+  let medal = "";
 
   if(i === 0) {
     cls = "gold";
-    medal = "🔥 🥇";
-  }
-  else if(i === 1) {
+    medal = "🥇";
+  } else if(i === 1) {
     cls = "silver";
     medal = "🥈";
-  }
-  else if(i === 2) {
+  } else if(i === 2) {
     cls = "bronze";
     medal = "🥉";
   }
 
   table.innerHTML += `
     <tr class="${cls}">
-      <td style="text-align:center;">${medal}</td>   <!-- 이모지 칸 -->
-      <td>${i+1}</td>                                <!-- 순위 숫자는 그대로 -->
+      <td class="rankcell">${medal} ${i+1}</td>
       <td>${r.name}</td>
       <td>${r.score}</td>
     </tr>
@@ -91,6 +94,7 @@ setInterval(refresh, 5000);
 
 </body>
 </html>
+
 
 
 
