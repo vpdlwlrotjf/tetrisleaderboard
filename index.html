@@ -35,7 +35,14 @@
   <h1> 통신 테트리스 랭킹 </h1>
   <div class="board">
     <table id="tbl">
-      <tr><th></th><th>Rank</th><th>Name</th><th>Score</th></tr>
+  <tr>
+    <th>Medal</th>   <!-- 메달 전용 칸 -->
+    <th>Rank</th>
+    <th>Name</th>
+    <th>Score</th>
+  </tr>
+</table>
+
     </table>
 
       <p class="note"> 랭킹 갱신은 최대 2~3분 소요될 수 있습니다 <br>
@@ -50,9 +57,8 @@ function handleLeaderboard(data) {
   table.innerHTML = `<tr><th>Rank</th><th>Name</th><th>Score</th></tr>`;
 
   data.sort((a,b)=>b.score-a.score).slice(0,10).forEach((r,i)=>{
-
   let cls = "normal";
-  let medal = "";
+  let medal = ""; // 메달 표시용
 
   if(i === 0) {
     cls = "gold";
@@ -67,7 +73,8 @@ function handleLeaderboard(data) {
 
   table.innerHTML += `
     <tr class="${cls}">
-      <td class="rankcell">${medal} ${i+1}</td>
+      <td class="medal">${medal}</td>  <!-- 메달 칸 -->
+      <td>${i+1}</td>                  <!-- Rank 숫자 칸 -->
       <td>${r.name}</td>
       <td>${r.score}</td>
     </tr>
@@ -94,6 +101,7 @@ setInterval(refresh, 5000);
 
 </body>
 </html>
+
 
 
 
