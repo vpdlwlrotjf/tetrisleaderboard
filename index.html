@@ -49,34 +49,31 @@ const API_URL = "https://script.google.com/macros/s/AKfycbzBQ4WQKRJMYEMcL1_McSYN
 
 function handleLeaderboard(data) {
   const table = document.getElementById("tbl");
-  // 테이블 초기화 (헤더 포함)
-  table.innerHTML = `
-    <tr>
-      <th>Medal</th>
-      <th>Rank</th>
-      <th>Name</th>
-      <th>Score</th>
-    </tr>
-  `;
+  
+  // 기존 데이터 지우기 (헤더는 그대로 두기)
+  table.querySelectorAll("tr:not(:first-child)").forEach(tr => tr.remove());
 
   data.sort((a,b)=>b.score-a.score).slice(0,10).forEach((r,i)=>{
     let cls = "normal";
-    let medal = ""; 
+    let medal = "";
 
     if(i === 0) { cls = "gold"; medal = "🥇"; }
     else if(i === 1) { cls = "silver"; medal = "🥈"; }
     else if(i === 2) { cls = "bronze"; medal = "🥉"; }
 
-    table.innerHTML += `
-      <tr class="${cls}">
-        <td class="medal">${medal}</td>
-        <td>${i+1}</td>
-        <td>${r.name}</td>
-        <td>${r.score}</td>
-      </tr>
+    const row = document.createElement("tr");
+    row.className = cls;
+    row.innerHTML = `
+      <td class="medal">${medal}</td>
+      <td>${i+1}</td>
+      <td>${r.name}</td>
+      <td>${r.score}</td>
     `;
+    table.appendChild(row);
   });
 }
+
+
 
 function refresh() {
   const old = document.getElementById("jsonp");
@@ -94,6 +91,7 @@ setInterval(refresh, 5000);
 
 </body>
 </html>
+
 
 
 
