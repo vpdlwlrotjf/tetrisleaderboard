@@ -44,20 +44,32 @@ function handleLeaderboard(data) {
   table.innerHTML = `<tr><th>Rank</th><th>Name</th><th>Score</th></tr>`;
 
   data.sort((a,b)=>b.score-a.score).slice(0,10).forEach((r,i)=>{
-  let cls = "normal"; 
 
-  if(i === 0) cls = "gold";      
-  else if(i === 1) cls = "silver"; 
-  else if(i === 2) cls = "bronze"; 
+  let cls = "normal";
+  let rankText = i + 1;
+
+  if(i === 0) {                // 1등
+    cls = "gold";
+    rankText = "🥇 " + rankText;
+  }
+  else if(i === 1) {           // 2등
+    cls = "silver";
+    rankText = "🥈 " + rankText;
+  }
+  else if(i === 2) {           // 3등
+    cls = "bronze";
+    rankText = "🥉 " + rankText;
+  }
 
   table.innerHTML += `
     <tr class="${cls}">
-      <td>${i+1}</td>
+      <td>${rankText}</td>
       <td>${r.name}</td>
       <td>${r.score}</td>
     </tr>
   `;
 });
+
 
 }
 
@@ -77,6 +89,7 @@ setInterval(refresh, 5000);
 
 </body>
 </html>
+
 
 
 
