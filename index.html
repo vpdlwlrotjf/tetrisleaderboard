@@ -33,7 +33,7 @@
     </table>
 
       <p class="note"> 랭킹 갱신은 최대 2~3분 소요될 수 있습니다 <br>
-                       제작자: 통신공학과 최지훈 <br>     통신공학과 송우진.</p>
+                       제작자: 통신공학과 최지훈 <br>     통신공학과 송우진</p>
   </div>
 
 <script>
@@ -50,15 +50,15 @@ function handleLeaderboard(data) {
 
   if(i === 0) {                // 1등
     cls = "gold";
-    rankText = "🔥 🥇 " + rankText;
+    rankText = "🔥🥇 " + rankText;
   }
   else if(i === 1) {           // 2등
     cls = "silver";
-    rankText = "   🥈 " + rankText;
+    rankText = "&nbsp;&nbsp;&nbsp;🥈 " + rankText;
   }
   else if(i === 2) {           // 3등
     cls = "bronze";
-    rankText = "   🥉 " + rankText;
+    rankText = "&nbsp;&nbsp;&nbsp;🥉 " + rankText;
   }
 
   table.innerHTML += `
@@ -89,6 +89,7 @@ setInterval(refresh, 5000);
 
 </body>
 </html>
+
 
 
 
