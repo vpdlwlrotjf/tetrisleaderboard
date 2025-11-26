@@ -29,7 +29,7 @@
   <h1> 통신 테트리스 랭킹 </h1>
   <div class="board">
     <table id="tbl">
-      <tr><th class="rank">Rank</th><th class="name">Name</th><th class="score">Score</th></tr>
+      <tr><th></th><th>Rank</th><th>Name</th><th>Score</th></tr>
     </table>
 
       <p class="note"> 랭킹 갱신은 최대 2~3분 소요될 수 있습니다 <br>
@@ -46,29 +46,31 @@ function handleLeaderboard(data) {
   data.sort((a,b)=>b.score-a.score).slice(0,10).forEach((r,i)=>{
 
   let cls = "normal";
-  let rankText = i + 1;
+  let medal = ""; 
 
-  if(i === 0) {                // 1등
+  if(i === 0) {
     cls = "gold";
-    rankText = "🔥 🥇 " + rankText;
+    medal = "🔥 🥇";
   }
-  else if(i === 1) {           // 2등
+  else if(i === 1) {
     cls = "silver";
-    rankText = "&nbsp;&nbsp;&nbsp;🥈 " + rankText;
+    medal = "🥈";
   }
-  else if(i === 2) {           // 3등
+  else if(i === 2) {
     cls = "bronze";
-    rankText = "&nbsp;&nbsp;&nbsp;🥉 " + rankText;
+    medal = "🥉";
   }
 
   table.innerHTML += `
     <tr class="${cls}">
-      <td>${rankText}</td>
+      <td style="text-align:center;">${medal}</td>   <!-- 이모지 칸 -->
+      <td>${i+1}</td>                                <!-- 순위 숫자는 그대로 -->
       <td>${r.name}</td>
       <td>${r.score}</td>
     </tr>
   `;
 });
+
 
 
 }
@@ -89,6 +91,7 @@ setInterval(refresh, 5000);
 
 </body>
 </html>
+
 
 
 
