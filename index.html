@@ -9,44 +9,39 @@
   h1{color:#66ccff;font-family:monospace;margin:0 0 12px 0}
   table{width:100%;border-collapse:collapse}
   td{padding:8px;border-bottom:1px solid #222;font-family:monospace;}
+  th{padding:8px;border-bottom:2px solid #444;font-family:monospace;}
   .rank{color:#00ff00;width:40px}
   .score{color:#ffcc00;text-align:right;width:80px}
   .name{color:#fff;text-align:left}
   .gold  { color: #ffd700; } /* 금 */
-  .silver { color: #A8A9AD; } /* 은(회색) */
+  .silver { color: #A8A9AD; } /* 은 */
   .bronze { color: #cd7f32; } /* 동 */
   .normal { color: #ffffff; } /* 나머지 */
-  .rankcell {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  justify-content: center;
-}
-
-
-
+  td.medal {
+    text-align: center;
+    width: 30px;
+  }
   .note {
     font-size: 12px;
     color: #777;
     margin-top: 10px;
+  }
 </style>
 </head>
 <body>
   <h1> 통신 테트리스 랭킹 </h1>
   <div class="board">
     <table id="tbl">
-  <tr>
-    <th>Medal</th>   <!-- 메달 전용 칸 -->
-    <th>Rank</th>
-    <th>Name</th>
-    <th>Score</th>
-  </tr>
-</table>
-
+      <tr>
+        <th>Medal</th>
+        <th>Rank</th>
+        <th>Name</th>
+        <th>Score</th>
+      </tr>
     </table>
 
-      <p class="note"> 랭킹 갱신은 최대 2~3분 소요될 수 있습니다 <br>
-                       제작자: 통신공학과 최지훈 <br>     통신공학과 송우진</p>
+    <p class="note"> 랭킹 갱신은 최대 2~3분 소요될 수 있습니다 <br>
+                     제작자: 통신공학과 최지훈 <br> 통신공학과 송우진</p>
   </div>
 
 <script>
@@ -54,35 +49,33 @@ const API_URL = "https://script.google.com/macros/s/AKfycbzBQ4WQKRJMYEMcL1_McSYN
 
 function handleLeaderboard(data) {
   const table = document.getElementById("tbl");
-  table.innerHTML = `<tr><th>Rank</th><th>Name</th><th>Score</th></tr>`;
-
-  data.sort((a,b)=>b.score-a.score).slice(0,10).forEach((r,i)=>{
-  let cls = "normal";
-  let medal = ""; // 메달 표시용
-
-  if(i === 0) {
-    cls = "gold";
-    medal = "🥇";
-  } else if(i === 1) {
-    cls = "silver";
-    medal = "🥈";
-  } else if(i === 2) {
-    cls = "bronze";
-    medal = "🥉";
-  }
-
-  table.innerHTML += `
-    <tr class="${cls}">
-      <td class="medal">${medal}</td>  <!-- 메달 칸 -->
-      <td>${i+1}</td>                  <!-- Rank 숫자 칸 -->
-      <td>${r.name}</td>
-      <td>${r.score}</td>
+  // 테이블 초기화 (헤더 포함)
+  table.innerHTML = `
+    <tr>
+      <th>Medal</th>
+      <th>Rank</th>
+      <th>Name</th>
+      <th>Score</th>
     </tr>
   `;
-});
 
+  data.sort((a,b)=>b.score-a.score).slice(0,10).forEach((r,i)=>{
+    let cls = "normal";
+    let medal = ""; 
 
+    if(i === 0) { cls = "gold"; medal = "🥇"; }
+    else if(i === 1) { cls = "silver"; medal = "🥈"; }
+    else if(i === 2) { cls = "bronze"; medal = "🥉"; }
 
+    table.innerHTML += `
+      <tr class="${cls}">
+        <td class="medal">${medal}</td>
+        <td>${i+1}</td>
+        <td>${r.name}</td>
+        <td>${r.score}</td>
+      </tr>
+    `;
+  });
 }
 
 function refresh() {
